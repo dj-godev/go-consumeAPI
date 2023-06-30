@@ -53,8 +53,11 @@ func fetchData(API int) {
 				c <- re
 				fmt.Println("Result for API 1 stored")
 			case 2:
-				if result["main"] != nil {
-					re[API] = result["main"].(map[string]interface{})["temp"]
+				if result["weather"] != nil {
+					for _, item := range result["weather"].([]interface{}) {
+						//fmt.Printf("%v", item.(map[string]interface{})["description"])
+						re[API] = item.(map[string]interface{})["description"]
+					}
 				} else {
 					re[API] = result["message"]
 				}
