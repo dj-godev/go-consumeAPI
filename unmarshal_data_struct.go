@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sort"
 )
 
 type Result struct {
@@ -38,9 +39,22 @@ func main() {
 			json.Unmarshal([]byte(body), &result)
 
 			if result.Success {
-				for i, v := range result.Rates {
-					fmt.Println(i, v)
+				// create an array to store all keys
+				keys := make([]string, 0, len(result.Rates))
+				// get all the keys---
+				for k, _ := range result.Rates {
+					keys = append(keys, k)
 				}
+				// sort the keys
+				sort.Strings(keys)
+				// print the keys and values in
+				// alphabetical order
+				for _, k := range keys {
+					fmt.Println(k, result.Rates[k])
+				}
+				/*for i, v := range result.Rates {
+					fmt.Println(i, v)
+				}*/
 			} else {
 				var err Error
 				json.Unmarshal([]byte(body), &err)
